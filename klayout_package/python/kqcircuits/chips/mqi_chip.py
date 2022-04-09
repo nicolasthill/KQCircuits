@@ -6,7 +6,7 @@ from kqcircuits.chips.chip import Chip
 from kqcircuits.elements.finger_capacitor_square import FingerCapacitorSquare
 from kqcircuits.elements.finger_capacitor_taper import FingerCapacitorTaper
 from kqcircuits.elements.meander import Meander
-from kqcircuits.elements.lattice_unit import lattice
+from kqcircuits.elements.lattice_unit import Lattice
 from kqcircuits.qubits.swissmon import Swissmon
 from kqcircuits.elements.airbridge_connection import AirbridgeConnection
 from kqcircuits.elements.waveguide_composite import WaveguideComposite, Node
