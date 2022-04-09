@@ -2,16 +2,15 @@
 from kqcircuits.elements.element import Element
 from kqcircuits.pya_resolver import pya
 from kqcircuits.util.parameters import Param, pdt
-
-
+from kqcircuits.qubits.swissmon import Swissmon
+from math import sqrt
 class Lattice(Element):
     """
     lattice containing one qubit
     """
 
-    b_lattice = Param(pdt.TypeDouble, "triangle width", 300, unit="μm")
-    h_lattice = Param(pdt.TypeDouble, "triangle height", 300, unit="μm")
-    s_lattice = Param(pdt.TypeDouble, "triangle width", 300, unit="μm")
+    b_lattice = Param(pdt.TypeDouble, "triangle width", 4000, unit="μm")
+    h_lattice = Param(pdt.TypeDouble, "triangle height", 4000, unit="μm")
 
     def build(self):
         # optical layer
@@ -19,9 +18,18 @@ class Lattice(Element):
         # shape for the inner conductor
         pts = [
             pya.DPoint(0,0),
-            pya.DPoint(self.h_lattice,self.b_lattice / 2),
-            pya.DPoint(self.h_lattice,-self.b_lattice / 2)
+            pya.DPoint(self.b_lattice*sqrt(3)/2,self.b_lattice/2),
+            pya.DPoint(self.b_lattice*sqrt(3)/2,-self.b_lattice/2)
         ]
+
+        pts2 = [
+            pya.DPoint(10,10),
+            pya.DPoint(10,20),
+            pya.DPoint(20,20),
+            pya.DPoint(20,10)
+        ]
+
+        qubit = Swissmon()
 
         # shifts = [
         #     pya.DVector(0, self.b),
@@ -32,18 +40,8 @@ class Lattice(Element):
         # pts.reverse()
         shape = pya.DPolygon(pts)
         self.cell.shapes(self.get_layer("base_metal_gap_wo_grid")).insert(shape)
+        self.insert_cell(Swissmon, pya.DTrans(45, False, 1500, 0))
 
-        # protection layer
-        shifts = [
-            pya.DVector(0, self.margin),
-            pya.DVector(0, self.margin),
-            pya.DVector(self.margin, self.margin)
-        ]
-        pts2 = [p + s for p, s in zip(pts2, shifts)]
-        shape = pya.DPolygon(pts2)
-        self.cell.shapes(self.get_layer("ground_grid_avoidance")).insert(shape)
 
         # add reference point
-        self.add_port("", pya.DPoint(0, 0), pya.DVector(-1, 0))
-
-
+        #self.add_port("", pya.DPoint(0, 0), pya.DVector(-1, 0))
