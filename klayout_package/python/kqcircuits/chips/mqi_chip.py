@@ -6,6 +6,7 @@ from kqcircuits.chips.chip import Chip
 from kqcircuits.elements.finger_capacitor_square import FingerCapacitorSquare
 from kqcircuits.elements.finger_capacitor_taper import FingerCapacitorTaper
 from kqcircuits.elements.meander import Meander
+from kqcircuits.elements.lattice_unit import lattice
 from kqcircuits.qubits.swissmon import Swissmon
 from kqcircuits.elements.airbridge_connection import AirbridgeConnection
 from kqcircuits.elements.waveguide_composite import WaveguideComposite, Node
@@ -18,7 +19,7 @@ from kqcircuits.util.geometry_helper import point_shift_along_vector
 @add_parameters_from(Chip, name_chip="MQIchip")
 class MQIchip(Chip):
     """Demonstration chip with a four qubits, four readout resonators, two probe lines, charge- and fluxlines."""
-  
+
     readout_res_lengths = Param(pdt.TypeList, "Readout resonator lengths", [5000, 5100, 5200, 5300], unit="[μm]")
     include_couplers = Param(pdt.TypeBoolean, "Include couplers between qubits", True)
 

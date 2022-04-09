@@ -12,6 +12,9 @@ class Lattice(Element):
     b_lattice = Param(pdt.TypeDouble, "triangle width", 4000, unit="μm")
     h_lattice = Param(pdt.TypeDouble, "triangle height", 4000, unit="μm")
 
+    def __init__(self):
+        super().__init__()
+
     def build(self):
         # optical layer
 
@@ -29,8 +32,6 @@ class Lattice(Element):
             pya.DPoint(20,10)
         ]
 
-        qubit = Swissmon()
-
         # shifts = [
         #     pya.DVector(0, self.b),
         #     pya.DVector(0, self.s_lattice),
@@ -40,8 +41,6 @@ class Lattice(Element):
         # pts.reverse()
         shape = pya.DPolygon(pts)
         self.cell.shapes(self.get_layer("base_metal_gap_wo_grid")).insert(shape)
-        self.insert_cell(Swissmon, pya.DTrans(45, False, 1500, 0))
-
-
+        _, self.swissmon_refpoints_abs = self.insert_cell(Swissmon, pya.DTrans(45, False, 1500, 0))
         # add reference point
         #self.add_port("", pya.DPoint(0, 0), pya.DVector(-1, 0))
