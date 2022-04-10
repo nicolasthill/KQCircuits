@@ -1,4 +1,5 @@
 # hackathon apr 9 2022, qec eth, iqm
+from kqcircuits.elements.hexagon import Hexagon
 from kqcircuits.pya_resolver import pya
 from kqcircuits.util.parameters import Param, pdt, add_parameters_from
 
@@ -15,6 +16,8 @@ from kqcircuits.elements.waveguide_coplanar_tcross import WaveguideCoplanarTCros
 from kqcircuits.test_structures.junction_test_pads import JunctionTestPads
 from kqcircuits.util.geometry_helper import point_shift_along_vector
 
+from math import sqrt, pi, tan
+
 
 @add_parameters_from(Chip, name_chip="MQIchip")
 class MQIchip(Chip):
@@ -25,35 +28,55 @@ class MQIchip(Chip):
 
     def build(self):
 
-        launcher_assignments = {
-            # N
-            2: "FL-QB1",
-            3: "RO-A1",
-            4: "RO-A2",
-            5: "FL-QB2",
-            # E
-            7: "DL-QB2",
-            12: "DL-QB4",
-            # S
-            14: "FL-QB4",
-            15: "RO-B1",
-            16: "RO-B2",
-            17: "FL-QB3",
-            # W
-            19: "DL-QB3",
-            24: "DL-QB1",
-        }
-        self.produce_launchers("ARD24", launcher_assignments)
+        # launcher_assignments = {
+        #     # N
+        #     2: "FL-QB1",
+        #     3: "RO-A1",
+        #     4: "RO-A2",
+        #     5: "FL-QB2",
+        #     # E
+        #     7: "DL-QB2",
+        #     12: "DL-QB4",
+        #     # S
+        #     14: "FL-QB4",
+        #     15: "RO-B1",
+        #     16: "RO-B2",
+        #     17: "FL-QB3",
+        #     # W
+        #     19: "DL-QB3",
+        #     24: "DL-QB1",
+        # }
+        # self.produce_launchers("ARD24", launcher_assignments)
 
-        self.produce_qubits()
-        if self.include_couplers:
-            self.produce_couplers()
-        self.produce_control_lines()
-        self.produce_readout_structures()
-        self.produce_probelines()
-        self.produce_junction_tests()
+        # self.produce_qubits()
+        # if self.include_couplers:
+        #     self.produce_couplers()
+        # self.produce_control_lines()
+        # self.produce_readout_structures()
+        # self.produce_probelines()
+        # self.produce_junction_tests()
+        self.produce_hexagons()
 
         super().build()
+
+    def produce_hexagons(self):
+        # radius in hexagon
+        long_radius = 4000
+        short_radius = long_radius * sqrt(3)/2
+        # radius to hexagon around
+        outer_radius = long_radius * 3/2
+
+        self.produce_hexagon(- short_radius * 2, 0)
+        self.produce_hexagon(  short_radius * 2, 0)
+
+        self.produce_hexagon(- short_radius, - outer_radius)
+        self.produce_hexagon(- short_radius,   outer_radius)
+
+        self.produce_hexagon(short_radius, - outer_radius)
+        self.produce_hexagon(short_radius,   outer_radius)
+
+    def produce_hexagon(self, x, y):
+        self.insert_cell(Hexagon, pya.DTrans(0, False, x, y))
 
     def produce_qubits(self):
         dist_x = 3220  # x-distance from chip edge
