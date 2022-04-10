@@ -105,7 +105,7 @@ class ChipFrame(Element):
     The chip frame consists of a dicing edge, and labels and markers in the corners.
     """
 
-    box = Param(pdt.TypeShape, "Border", pya.DBox(pya.DPoint(0, 0), pya.DPoint(10000, 10000)),
+    box = Param(pdt.TypeShape, "Border", pya.DBox(pya.DPoint(-10000, -10000), pya.DPoint(10000, 10000)),
         docstring="Bounding box of the chip frame")
     with_grid = Param(pdt.TypeBoolean, "Make ground plane grid", False)
     dice_width = Param(pdt.TypeDouble, "Dicing width", 200, unit="μm")
