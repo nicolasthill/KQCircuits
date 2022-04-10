@@ -17,17 +17,30 @@ class Hexagon(Element):
         self.produce_coupler("Q", "QB2", 2)
 
     def produce_coupler(self, qubit_a_name, qubit_b_name, port_nr):
-        self.insert_cell(WaveguideComposite, nodes=[
 
-            Node(self.refpoints["{}_port_cplr{}".format(qubit_a_name, port_nr)]),
-            Node(point_shift_along_vector(self.refpoints["{}_port_cplr{}".format(qubit_a_name, port_nr)],
-                                          self.refpoints["{}_base".format(qubit_a_name)], -40)),
+        for i in range(6):
+            self.insert_cell(WaveguideComposite, nodes=[
 
-            Node(point_shift_along_vector(self.refpoints["{}_port_cplr{}".format(qubit_b_name, port_nr)],
-                                          self.refpoints["{}_base".format(qubit_b_name)], -40),
-                 n_bridges=3),
-            Node(self.refpoints["{}_port_cplr{}".format(qubit_b_name, port_nr)])])
+                Node(point_shift_along_vector(self.refpoints["lattice_{}_Q_port_cplr0".format((i+1)%6)],
+                                              self.refpoints["lattice_{}_base".format((i+1)%6)], -10)),
 
+                Node(point_shift_along_vector(self.refpoints["lattice_{}_Q_port_cplr1".format(i)],
+                                              self.refpoints["lattice_{}_base".format((i))], -10),
+                     n_bridges=0)
+                ])
+
+    """
+    self.insert_cell(WaveguideComposite, nodes=[
+
+                Node(self.refpoints["lattice_{}_Q_port_cplr0".format((i+1)%6)]),
+                Node(point_shift_along_vector(self.refpoints["lattice_{}_Q_port_cplr0".format((i+1)%6)],
+                                              self.refpoints["lattice_{}_base".format((i+1)%6)], -10)),
+
+                Node(point_shift_along_vector(self.refpoints["lattice_{}_Q_port_cplr1".format(i)],
+                                              self.refpoints["lattice_{}_base".format((i))], -10),
+                     n_bridges=0),
+                Node(self.refpoints["lattice_{}_Q_port_cplr1".format(i)])])
+    """
 
     def build(self):
         # store refs of all lattices
@@ -42,7 +55,7 @@ class Hexagon(Element):
         # add reference point
         self.add_port("", pya.DPoint(0, 0), pya.DVector(-1, 0))
 
-        #self.produce_couplers()
+        self.produce_couplers()
 
         super().build()
 
