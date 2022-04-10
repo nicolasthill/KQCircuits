@@ -57,7 +57,7 @@ class MQIchip(Chip):
         # self.produce_junction_tests()
         self.produce_hexagons()
 
-        super().build()
+        # super().build()
 
     def produce_hexagons(self):
         # radius in hexagon
