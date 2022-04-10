@@ -197,7 +197,7 @@ class Demo(Chip):
             Node(self.refpoints["{}1_base".format(probeline_name)]),
             Node(self.refpoints["{}1_port_corner".format(probeline_name)]),
             Node((self.refpoints["RO{}_port_left".format(qubit_a_nr)].x,
-                                                self.refpoints["{}1_port_corner".format(probeline_name)].y)),
+                self.refpoints["{}1_port_corner".format(probeline_name)].y)),
             Node(cap_ref_abs["port_a"]),
         ])
 

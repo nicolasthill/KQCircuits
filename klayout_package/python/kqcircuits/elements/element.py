@@ -24,6 +24,7 @@ from kqcircuits.defaults import default_layers, default_faces, default_parameter
 from kqcircuits.pya_resolver import pya
 from kqcircuits.util.geometry_helper import get_cell_path_length
 from kqcircuits.util.library_helper import load_libraries, to_library_name
+from kqcircuits.util.netlist_extraction import log
 from kqcircuits.util.parameters import Param, pdt
 
 
@@ -351,6 +352,7 @@ class Element(pya.PCellDeclarationHelper):
             library: LIBRARY_NAME of the calling PCell instance
             **parameters: PCell parameters for the element as keyword arguments
         """
+        log.critical("Creating Cell")
         cell_library_name = to_library_name(elem_cls.__name__)
         if elem_cls.LIBRARY_NAME == library:  # Matthias' workaround: https://github.com/KLayout/klayout/issues/905
             return layout.create_cell(cell_library_name, parameters)
